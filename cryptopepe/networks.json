@@ -1,0 +1,12 @@
+{
+  "goerli": {
+    "CryptoPepeWrapper": {
+      "address": "0x661526219293E2853302e11Da6717476aD2c7ffa",
+      "startBlock": 8894603
+    },
+    "PepeBase": {
+      "address": "0x74021902C88CB3a5bcC8aA68E7CfC416D8175dA5",
+      "startBlock": 8894602
+    } 
+  }
+}
