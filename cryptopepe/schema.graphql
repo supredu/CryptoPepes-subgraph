@@ -1,14 +1,19 @@
+type Global @entity{
+  id: ID!
+  totalSupply: Int!
+}
+
 type User @entity{
   id: ID! #account
   username: String
-  holdings: [Pepe!] @derivedfrom(field: "owner")
+  holdings: [Pepe!] @derivedFrom(field: "owner")
 }
 type Pepe @entity{
   id: ID!
   owner: User!
   mother: Pepe!
   father: Pepe!
-  uri: String!
+  uri: String
   previousOwner: User!
   tokenId: BigInt!
   metadata: PepeMetadata
@@ -22,12 +27,11 @@ enum Wrapped{
 }
 type PepeMetadata @entity {
   id: ID! # IPFS URI
-  image: String!
-  externalURL: String!
-  animationURL: String!
+  image: String
+  externalURL: String
   name: String!
   description: String!
-  attributes: [Attribute!] @derivedfrom(field: "metadata")
+  attributes: [Attribute!] @derivedFrom(field: "metadata")
 }
 
 type Attribute @entity {
@@ -37,53 +41,53 @@ type Attribute @entity {
   metadata: PepeMetadata!
 }
 
-interface Transaction @entity(immutable: true){
+interface Transaction {
   id: ID!
-  sender: Bytes! # address
+  pepe: Pepe! # address
   blockNumber: BigInt!
   timestamp: BigInt!
-  transactionHash: Bytes!
 }
-type Mint implements Transaction @entity{
-  id: Bytes! #txHash
+type Mint implements Transaction  @entity(immutable: true) {
+  id: ID! #txHash - LogIndex
   receiver: User!
   timestamp: BigInt!
   blockNumber: BigInt!
   pepe: Pepe!
 }
 
-type Burn implements Transaction @entity {
-  id: Bytes! #txHash
+type Burn implements Transaction  @entity(immutable: true) {
+  id: ID! #txHash
   timestamp: BigInt!
   blockNumber: BigInt!
   sender: User!
   pepe: Pepe!
 }
-type Transfer implements Transaction @entity  {
-  id: Bytes! #txHash
+type Transfer  implements Transaction  @entity(immutable: true)  {
+  id: ID! #txHash - LogIndex
   timestamp: BigInt!
   blockNumber: BigInt!
   receiver: User!
   sender: User!
   pepe: Pepe!
 }
-type Wrap implements Transaction @entity{
-  id: Bytes! #txHash
+type Wrap  implements Transaction  @entity(immutable: true){
+  id: ID! #txHash - LogIndex
   sender: User! # address
   pepe: Pepe!
   blockNumber: BigInt!
   timestamp: BigInt!
 }
-type Unwrap implements Transaction @entity{
-  id: Bytes! #txHash
+type Unwrap  implements Transaction  @entity(immutable: true){
+  id: ID! #txHash - LogIndex
   sender: User! # address
   receiver: User! # address
   pepe: Pepe!
   blockNumber: BigInt!
   timestamp: BigInt!
 }
-type BatchWrap implements Transaction @entity{
-  id: Bytes! #txHash
+
+type BatchWrap  @entity{
+  id: ID! #txHash
   sender: User! # address
   pepes: [Pepe!]!
   blockNumber: BigInt!

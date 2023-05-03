@@ -9,17 +9,16 @@ export function handleMetadata(content: Bytes): void {
     const name = value.get("name");
     const description = value.get("description");
     const externalURL = value.get("external_url");
-    const animationURL = value.get("animation_url");
     const attributes = value.get("attributes");
 
-    if (name && image && description && externalURL && animationURL) {
+    if (name && image && description && externalURL) {
       pepeMetadata.name = name.toString();
       pepeMetadata.image = image.toString();
       pepeMetadata.externalURL = externalURL.toString();
       pepeMetadata.description = description.toString();
-      pepeMetadata.animationURL = animationURL.toString();
-    }
 
+    }
+    pepeMetadata.save();
     if(attributes) {
         let attributeArray = attributes.toArray();
         let arrayLength = attributeArray.length;
